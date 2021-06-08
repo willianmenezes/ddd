@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Reflection.Metadata.Ecma335;
 using NerdStore.Core.DomainObjects;
 
 namespace NerdStore.Catalogo.Domain
@@ -16,6 +15,8 @@ namespace NerdStore.Catalogo.Domain
             DataCadastro = dataCadastro;
             Imagem = imagem;
             CategoriaId = categoriaId;
+            
+            Validar();
         }
 
         public string Nome { get; private set; }
@@ -38,11 +39,20 @@ namespace NerdStore.Catalogo.Domain
             CategoriaId = categoria.Id;
         }
 
-        public void AlterarDescricao(string descricao) => Descricao = descricao;
+        public void AlterarDescricao(string descricao)
+        {
+            Validacoes.ValidarSeVazio(Descricao, "O campo Descrição do Produto não pode estar vazio");
+            Descricao = descricao;
+        }
 
         public void DebitarEstoque(int quantidade)
         {
             if (quantidade < 0) quantidade *= -1;
+
+            if (!PossuiEstoque(quantidade))
+            {
+                throw new DomainExeption("Estoque insuficiente");
+            }
 
             QuantidadeEstoque -= quantidade;
         }
@@ -59,23 +69,11 @@ namespace NerdStore.Catalogo.Domain
 
         public void Validar()
         {
-        }
-    }
-
-    public class Categoria : Entity
-    {
-        public Categoria(string nome, string codigo)
-        {
-            Nome = nome;
-            Codigo = codigo;
-        }
-
-        public string Nome { get; private set; }
-        public string Codigo { get; private set; }
-
-        public override string ToString()
-        {
-            return $"{Nome} - {Codigo}";
+            Validacoes.ValidarSeVazio(Nome, "O campo Nome do Produto não pode estar vazio");
+            Validacoes.ValidarSeVazio(Descricao, "O campo Descrição do Produto não pode estar vazio");
+            Validacoes.ValidarSeDiferente(CategoriaId, Guid.Empty, "O campo Categoria Id do Produto não pode ser indefinido");
+            Validacoes.ValidarSeMenorOuIgualMinimo(Valor, 0, "O campo Valor do Produto não pode ser menos ou igual a zero");
+            Validacoes.ValidarSeVazio(Imagem, "O campo Imagem do Produto não pode ser vazio");
         }
     }
 }
