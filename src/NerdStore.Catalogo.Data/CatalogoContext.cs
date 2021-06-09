@@ -38,7 +38,6 @@ namespace NerdStore.Catalogo.Data
                     entry.Property("DataCadastro").CurrentValue = DateTime.Now;
                 }
 
-
                 if (entry.State == EntityState.Modified)
                 {
                     entry.Property("DataCadastro").IsModified = false;
