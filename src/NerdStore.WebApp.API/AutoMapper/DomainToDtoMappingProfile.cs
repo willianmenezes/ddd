@@ -11,15 +11,9 @@ namespace NerdStore.WebApp.API.AutoMapper
             CreateMap<Categoria, CategoriaDto>();
 
             CreateMap<Produto, ProdutoDto>()
-                .ForMember(x => x.Largura,
-                    y =>
-                        y.MapFrom(z => z.Dimensoes.Largura))
-                .ForMember(x => x.Altura,
-                    y =>
-                        y.MapFrom(z => z.Dimensoes.Altura))
-                .ForMember(x => x.Profundidade,
-                    y =>
-                        y.MapFrom(z => z.Dimensoes.Profundidade));
+                .ForMember(x => x.Largura, y => y.MapFrom(z => z.Dimensoes.Largura))
+                .ForMember(x => x.Altura, y => y.MapFrom(z => z.Dimensoes.Altura))
+                .ForMember(x => x.Profundidade, y => y.MapFrom(z => z.Dimensoes.Profundidade));
         }
     }
 }
