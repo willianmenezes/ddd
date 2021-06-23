@@ -23,7 +23,7 @@ namespace NerdStore.Catalogo.Data.Mappings
                 .HasColumnType("varchar(250)");
 
             builder.Property(x => x.Valor)
-                    .HasColumnType("decimal(10,10)");
+                    .HasColumnType("decimal(10,2)");
 
             builder.OwnsOne(p => p.Dimensoes, dm =>
             {
