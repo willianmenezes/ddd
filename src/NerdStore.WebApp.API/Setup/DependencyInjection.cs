@@ -6,6 +6,9 @@ using NerdStore.Catalogo.Domain;
 using NerdStore.Catalogo.Domain.Events;
 using NerdStore.Core.Bus;
 using NerdStore.Vendas.Application.Commands;
+using NerdStore.Vendas.Data;
+using NerdStore.Vendas.Data.Repository;
+using NerdStore.Vendas.Domain;
 using NerdStore.WebApp.API.Services;
 
 namespace NerdStore.WebApp.API.Setup
@@ -14,18 +17,20 @@ namespace NerdStore.WebApp.API.Setup
     {
         public static void RegisterServices(this IServiceCollection services)
         {
-            services.AddScoped<IMediatrHandler, MediatrHandler>();
+            services.AddScoped<IMediatorHandler, MediatrHandler>();
 
             // Catalogo
             services.AddScoped<IProdutoRepository, ProdutoRepository>();
-            services.AddScoped<IProdutoAppService, ProdutoAppService>();
             services.AddScoped<IEstoqueService, EstoqueService>();
+            services.AddScoped<IProdutoAppService, ProdutoAppService>();
             services.AddScoped<CatalogoContext>();
 
             services.AddScoped<INotificationHandler<ProdutoAbaixoEstoqueEvent>, ProdutoEventHandler>();
 
             // Vendas
             services.AddScoped<IRequestHandler<AdicionarItemPedidoCommand, bool>, PedidoCommandHandler>();
+            services.AddScoped<IPedidoRepository, PedidoRepository>();
+            services.AddScoped<VendasContext>();
         }
     }
 }

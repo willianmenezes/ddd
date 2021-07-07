@@ -9,6 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using NerdStore.Catalogo.Data;
 using NerdStore.WebApp.API.AutoMapper;
 using NerdStore.WebApp.API.Setup;
+using NerdStore.Vendas.Data;
 
 namespace NerdStore.WebApp.API
 {
@@ -31,7 +32,12 @@ namespace NerdStore.WebApp.API
             });
 
             services.AddDbContext<CatalogoContext>(options =>
+                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));  
+            
+            services.AddDbContext<VendasContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+
+            services.RegisterServices();
 
             // Injetando profiles automapper
             services.AddAutoMapper(typeof(DomainToDtoMappingProfile), typeof(DtoToDomainMappingProfile));
@@ -39,7 +45,6 @@ namespace NerdStore.WebApp.API
             // injetando mediatr
             services.AddMediatR(typeof(Startup));
             
-            services.RegisterServices();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

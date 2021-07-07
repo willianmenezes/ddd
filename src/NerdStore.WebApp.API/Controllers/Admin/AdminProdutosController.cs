@@ -8,7 +8,7 @@ namespace NerdStore.WebApp.API.Controllers.Admin
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class AdminProdutosController : ControllerBase
+    public class AdminProdutosController : BaseController
     {
         private readonly IProdutoAppService _produtoAppService;
 
