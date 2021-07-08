@@ -19,7 +19,7 @@ namespace NerdStore.Vendas.Domain
             ProdutoId = produtoId;
             ProdutoNome = produtoNome;
             Quantidade = quantidade;
-            ValorUnitario = ValorUnitario;
+            ValorUnitario = valorUnitario;
         }
 
         protected PedidoItem() { }
