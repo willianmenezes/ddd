@@ -16,7 +16,7 @@ namespace NerdStore.WebApp.API.Controllers.Admin
         private readonly IProdutoAppService _produtoAppService;
 
         public AdminProdutosController(IProdutoAppService produtoAppService,
-                                       DomainNotificationHandler domainNotificationHandler,
+                                       INotificationHandler<DomainNotification> domainNotificationHandler,
                                        IMediatorHandler mediatorHandler) : base(domainNotificationHandler, mediatorHandler)
         {
             _produtoAppService = produtoAppService;
