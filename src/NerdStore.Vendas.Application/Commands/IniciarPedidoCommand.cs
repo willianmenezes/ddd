@@ -17,13 +17,19 @@ namespace NerdStore.Vendas.Application.Commands
             CvvCartao = cvvCartao;
         }
 
-        public Guid PedidoId { get; set; }
-        public Guid ClienteId { get; set; }
-        public decimal ValorTotal { get; set; }
-        public string NumeroCartao { get; set; }
-        public string NomeCartao { get; set; }
-        public string ExpiracaoCartao { get; set; }
-        public string CvvCartao { get; set; }
+        public Guid PedidoId { get; private set; }
+        public Guid ClienteId { get; private set; }
+        public decimal ValorTotal { get; private set; }
+        public string NumeroCartao { get; private set; }
+        public string NomeCartao { get; private set; }
+        public string ExpiracaoCartao { get; private set; }
+        public string CvvCartao { get; private set; }
+
+        public override bool EhValido()
+        {
+            var validationResult = new IniciarPedidoCommandValidation().Validate(this);
+            return validationResult.IsValid;
+        }
     }
 
     public class IniciarPedidoCommandValidation : AbstractValidator<IniciarPedidoCommand>

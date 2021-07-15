@@ -1,6 +1,9 @@
 ﻿using MediatR;
 using NerdStore.Core.Bus;
+using NerdStore.Core.DomainObjects.Dtos;
+using NerdStore.Core.Extensions;
 using NerdStore.Core.Messages;
+using NerdStore.Core.Messages.CommonMessages.IntegrationEvents;
 using NerdStore.Core.Messages.CommonMessages.Notifications;
 using NerdStore.Vendas.Application.Events;
 using NerdStore.Vendas.Domain;
@@ -17,7 +20,8 @@ namespace NerdStore.Vendas.Application.Commands
         IRequestHandler<AdicionarItemPedidoCommand, bool>,
         IRequestHandler<AplicarVoucherPedidoCommand, bool>,
         IRequestHandler<RemoverItemPedidoCommand, bool>,
-        IRequestHandler<AtualizarPedidoCommand, bool>
+        IRequestHandler<AtualizarPedidoCommand, bool>,
+        IRequestHandler<IniciarPedidoCommand, bool>
     {
         private readonly IPedidoRepository _pedidoRepository;
         private readonly IMediatorHandler _mediatorHandler;
@@ -153,6 +157,23 @@ namespace NerdStore.Vendas.Application.Commands
             pedido.AdicionarEvento(new PedidoProdutoRemovidoEvent(message.ClienteId, pedido.Id, message.ProdutoId));
             pedido.AdicionarEvento(new PedidoAtualizadoEvent(pedido.ClienteId, pedido.Id, pedido.ValorTotal));
 
+            return await _pedidoRepository.UnitOfWork.Commit();
+        }
+
+        public async Task<bool> Handle(IniciarPedidoCommand message, CancellationToken cancellationToken)
+        {
+            if (!ValidarComando(message)) return false;
+
+            var pedido = await _pedidoRepository.ObterPedidoRascunhoPorClienteId(message.ClienteId);
+            pedido.IniciarPedido();
+
+            var listItem = new List<Item>();
+            pedido.PedidoItens.ForEach(i => listItem.Add(new Item { Id = i.Id, Quantidade = i.Quantidade }));
+            var listaProdutosPedido = new ListaProdutosPedido() { PedidoId = pedido.Id, Itens = listItem };
+
+            pedido.AdicionarEvento(new PedidoIniciadoEvent(pedido.Id, pedido.ClienteId, listaProdutosPedido, pedido.ValorTotal, message.NomeCartao, message.NumeroCartao, message.ExpiracaoCartao, message.CvvCartao));
+
+            _pedidoRepository.Atualizar(pedido);
             return await _pedidoRepository.UnitOfWork.Commit();
         }
 
