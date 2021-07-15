@@ -4,6 +4,7 @@ using NerdStore.Core.Bus;
 using NerdStore.Core.Messages.CommonMessages.Notifications;
 using NerdStore.Vendas.Application.Commands;
 using NerdStore.Vendas.Application.Queries;
+using NerdStore.Vendas.Application.Queries.ViewModels;
 using NerdStore.WebApp.API.Services;
 using System;
 using System.Threading.Tasks;
@@ -111,6 +112,26 @@ namespace NerdStore.WebApp.API.Controllers
         public async Task<IActionResult> ResumoCompra()
         {
             return Ok(await _pedidoQueries.ObterCarrinhoCliente(ClienteId));
+        }
+
+        [HttpPost("iniciar-pedido")]
+        public async Task<IActionResult> IniciarPedido()
+        {
+            var carrinho = await _pedidoQueries.ObterCarrinhoCliente(ClienteId);
+
+            var command = new IniciarPedidoCommand(carrinho.PedidoId, carrinho.ClienteId, carrinho.ValorTotal, carrinho.Pagamento.NumeroCartao,
+                carrinho.Pagamento.NomeCartao, carrinho.Pagamento.ExpiracaoCartao, carrinho.Pagamento.CvvCartao);
+
+            await _mediatrHandler.EnviarCommando(command);
+
+            if (OperacaoValida())
+            {
+                return Ok();
+            }
+
+            var notificacoes = ObterNotificacoes();
+
+            return BadRequest(notificacoes);
         }
     }
 }
