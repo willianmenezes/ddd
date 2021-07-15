@@ -33,54 +33,54 @@ namespace NerdStore.WebApp.API.Controllers
         {
             return Ok(await _pedidoQueries.ObterCarrinhoCliente(ClienteId));
         }
-        
-        //[HttpGet("remover-item")]
-        //public async Task<IActionResult> RemoverItem(Guid id)
-        //{
-        //    var produto = await _produtoAppService.ObterPorId(id);
-        //    if (produto == null) return BadRequest();
 
-        //    var command = new RemoverItemPedidoCommand(ClienteId, id);
-        //    await _mediatrHandler.EnviarCommando(command);
+        [HttpGet("remover-item")]
+        public async Task<IActionResult> RemoverItem(Guid id)
+        {
+            var produto = await _produtoAppService.ObterPorId(id);
+            if (produto == null) return BadRequest();
 
-        //    if (OperacaoValida())
-        //    {
-        //        return Ok();
-        //    }
+            var command = new RemoverItemPedidoCommand(ClienteId, id);
+            await _mediatrHandler.EnviarCommando(command);
 
-        //    return BadRequest("Erro ao remover item do carrinho, tente novamente");
-        //} 
-        
-        //[HttpGet("atualizar-item")]
-        //public async Task<IActionResult> AtualizarItem(Guid id, int quantidade)
-        //{
-        //    var produto = await _produtoAppService.ObterPorId(id);
-        //    if (produto == null) return BadRequest();
+            if (OperacaoValida())
+            {
+                return Ok();
+            }
 
-        //    var command = new AtualizarItemPedidoCommand(ClienteId, id, quantidade);
-        //    await _mediatrHandler.EnviarCommando(command);
+            return BadRequest("Erro ao remover item do carrinho, tente novamente");
+        }
 
-        //    if (OperacaoValida())
-        //    {
-        //        return Ok();
-        //    }
+        [HttpGet("atualizar-item")]
+        public async Task<IActionResult> AtualizarItem(Guid id, int quantidade)
+        {
+            var produto = await _produtoAppService.ObterPorId(id);
+            if (produto == null) return BadRequest();
 
-        //    return BadRequest("Erro ao atualizar item do carrinho, tente novamente");
-        //}
-        
-        //[HttpGet("aplicar-voucher")]
-        //public async Task<IActionResult> AplicarVoucher(string codigoVoucher)
-        //{
-        //    var command = new AplicarVoucherPedidoCommand(ClienteId, codigoVoucher);
-        //    await _mediatrHandler.EnviarCommando(command);
+            var command = new AtualizarPedidoCommand(ClienteId, id, quantidade);
+            await _mediatrHandler.EnviarCommando(command);
 
-        //    if (OperacaoValida())
-        //    {
-        //        return Ok();
-        //    }
+            if (OperacaoValida())
+            {
+                return Ok();
+            }
 
-        //    return BadRequest("Erro ao aplicar voucher, tente novamente");
-        //}
+            return BadRequest("Erro ao atualizar item do carrinho, tente novamente");
+        }
+
+        [HttpGet("aplicar-voucher")]
+        public async Task<IActionResult> AplicarVoucher(string codigoVoucher)
+        {
+            var command = new AplicarVoucherPedidoCommand(ClienteId, codigoVoucher);
+            await _mediatrHandler.EnviarCommando(command);
+
+            if (OperacaoValida())
+            {
+                return Ok();
+            }
+
+            return BadRequest("Erro ao aplicar voucher, tente novamente");
+        }
 
         [HttpPost("meu-carrinho/{id}/{quantidade}")]
         public async Task<IActionResult> AdicionarItem([FromRoute] Guid id, [FromRoute] int quantidade)

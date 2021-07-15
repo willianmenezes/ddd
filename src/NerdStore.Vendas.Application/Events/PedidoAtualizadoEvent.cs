@@ -17,4 +17,19 @@ namespace NerdStore.Vendas.Application.Events
         public Guid PedidoId { get; private set; }
         public decimal ValorTotal { get; private set; }
     }
+
+    public class VoucherAplicadoEvent: Event
+    {
+        public VoucherAplicadoEvent(Guid clienteId, Guid pedidoId, Guid voucherId)
+        {
+            AggregateId = pedidoId;
+            ClienteId = clienteId;
+            PedidoId = pedidoId;
+            VoucherId = voucherId;
+        }
+
+        public Guid ClienteId { get; private set; }
+        public Guid PedidoId { get; private set; }
+        public Guid VoucherId { get; private set; }
+    }
 }
