@@ -106,5 +106,11 @@ namespace NerdStore.WebApp.API.Controllers
 
             return BadRequest(notificacoes);
         }
+
+        [HttpGet("resumo-compra")]
+        public async Task<IActionResult> ResumoCompra()
+        {
+            return Ok(await _pedidoQueries.ObterCarrinhoCliente(ClienteId));
+        }
     }
 }
