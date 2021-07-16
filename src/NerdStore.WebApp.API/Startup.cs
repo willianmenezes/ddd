@@ -10,6 +10,7 @@ using NerdStore.Catalogo.Data;
 using NerdStore.WebApp.API.AutoMapper;
 using NerdStore.WebApp.API.Setup;
 using NerdStore.Vendas.Data;
+using NerdStore.Pagamentos.Data;
 
 namespace NerdStore.WebApp.API
 {
@@ -35,6 +36,9 @@ namespace NerdStore.WebApp.API
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));  
             
             services.AddDbContext<VendasContext>(options =>
+                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            
+            services.AddDbContext<PagamentoContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
             services.RegisterServices();
