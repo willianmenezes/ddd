@@ -69,7 +69,7 @@ namespace NerdStore.Catalogo.Application.Services
 
         public async Task<ProdutoViewModel> ReporEstoque(Guid id, int quantidade)
         {
-            if (!_estoqueService.ReportarEstoque(id, quantidade).Result)
+            if (!_estoqueService.ReporEstoque(id, quantidade).Result)
             {
                 throw new DomainException("Falha ao repor estoque");
             }

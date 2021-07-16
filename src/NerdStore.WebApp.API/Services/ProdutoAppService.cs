@@ -67,7 +67,7 @@ namespace NerdStore.WebApp.API.Services
 
         public async Task<ProdutoDto> ReporEstoque(Guid id, int quantidade)
         {
-            if (!_estoqueService.ReportarEstoque(id, quantidade).Result)
+            if (!_estoqueService.ReporEstoque(id, quantidade).Result)
             {
                 throw new DomainException("Falha ao repor estoque");
             }

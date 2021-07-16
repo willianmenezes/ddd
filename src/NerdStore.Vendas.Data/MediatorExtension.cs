@@ -1,14 +1,11 @@
 ﻿using NerdStore.Core.Bus;
 using NerdStore.Core.DomainObjects;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace NerdStore.Vendas.Data
 {
-    public  static class MediatorExtension
+    public static class MediatorExtension
     {
         public static async Task PublicarEventos(this IMediatorHandler mediator, VendasContext context)
         {
