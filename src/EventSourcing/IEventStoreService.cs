@@ -1,4 +1,5 @@
 ﻿using EventStore.ClientAPI;
+using System.Threading.Tasks;
 
 namespace EventSourcing
 {

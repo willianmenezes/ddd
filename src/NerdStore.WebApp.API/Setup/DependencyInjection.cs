@@ -28,6 +28,10 @@ namespace NerdStore.WebApp.API.Setup
     {
         public static void RegisterServices(this IServiceCollection services)
         {
+            //EVENT SOURCING
+            services.AddSingleton<IEventStoreService, EventStoreService>();
+            services.AddSingleton<IEventSourcingRepository, EventSourcingRepository>();
+
             // Mediator
             services.AddScoped<IMediatorHandler, MediatrHandler>();
 
@@ -73,9 +77,7 @@ namespace NerdStore.WebApp.API.Setup
 
             services.AddScoped<INotificationHandler<PedidoEstoqueConfirmadoEvent>, PagamentoEventHandler>();
 
-            //EVENT SOURCING
-            services.AddSingleton<IEventStoreService, EventStoreService>();
-            services.AddSingleton<IEventSourcingRepository, EventSourcingRepository>();
+            
         }
     }
 }

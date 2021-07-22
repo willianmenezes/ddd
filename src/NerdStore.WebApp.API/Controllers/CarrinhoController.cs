@@ -35,7 +35,7 @@ namespace NerdStore.WebApp.API.Controllers
             return Ok(await _pedidoQueries.ObterCarrinhoCliente(ClienteId));
         }
 
-        [HttpGet("remover-item")]
+        [HttpDelete("remover-item")]
         public async Task<IActionResult> RemoverItem(Guid id)
         {
             var produto = await _produtoAppService.ObterPorId(id);
@@ -52,7 +52,7 @@ namespace NerdStore.WebApp.API.Controllers
             return BadRequest("Erro ao remover item do carrinho, tente novamente");
         }
 
-        [HttpGet("atualizar-item")]
+        [HttpPut("atualizar-item")]
         public async Task<IActionResult> AtualizarItem(Guid id, int quantidade)
         {
             var produto = await _produtoAppService.ObterPorId(id);
@@ -69,7 +69,7 @@ namespace NerdStore.WebApp.API.Controllers
             return BadRequest("Erro ao atualizar item do carrinho, tente novamente");
         }
 
-        [HttpGet("aplicar-voucher")]
+        [HttpPost("aplicar-voucher")]
         public async Task<IActionResult> AplicarVoucher(string codigoVoucher)
         {
             var command = new AplicarVoucherPedidoCommand(ClienteId, codigoVoucher);

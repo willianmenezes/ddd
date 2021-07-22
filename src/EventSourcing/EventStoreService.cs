@@ -1,5 +1,7 @@
 ﻿using EventStore.ClientAPI;
 using Microsoft.Extensions.Configuration;
+using System;
+using System.Threading.Tasks;
 
 namespace EventSourcing
 {
@@ -9,8 +11,8 @@ namespace EventSourcing
 
         public EventStoreService(IConfiguration configuration)
         {
-            _connection = EventStoreConnection.Create(configuration.GetConnectionString("EventStoreConnection"));
-
+            _connection = EventStoreConnection.Create(
+                configuration.GetConnectionString("EventStoreConnection"));
             _connection.ConnectAsync();
         }
 
